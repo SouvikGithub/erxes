@@ -6,41 +6,50 @@ import { IEditorProps } from '../types';
 
 const { REACT_APP_API_URL } = getEnv();
 
-export const getMentionedUserIds = (content: string) => {
+export const getMentionedUserIds = (content: string) => 
+{
   const re = new RegExp('<a[^>]* mentioned-user-id="([^"]*)"', 'g');
 
   const mentionedUserIds: string[] = (content.match(re) || []).map(m =>
     m.replace(re, '$1')
   );
 
-  return mentionedUserIds.filter((value, index, self) => {
+  return mentionedUserIds.filter((value, index, self) => 
+                                 {
     return self.indexOf(value) === index;
   });
 };
 
-class EditorCK extends React.Component<IEditorProps, { content: string }> {
-  constructor(props: IEditorProps) {
+class EditorCK extends React.Component<IEditorProps, { content: string }> 
+{
+  constructor(props: IEditorProps) 
+  {
     super(props);
 
     CKEditor.editorUrl = '/ckeditor/ckeditor.js';
     this.onEnter = this.onEnter.bind(this);
   }
 
-  componentDidUpdate = (prevProps: IEditorProps) => {
+  componentDidUpdate = (prevProps: IEditorProps) => 
+  {
     const { name, content } = this.props;
 
-    if (name && prevProps.content !== this.props.content) {
+    if (name && prevProps.content !== this.props.content) 
+    {
       localStorage.setItem(name, content);
     }
   };
 
-  componentDidMount() {
+  componentDidMount() 
+{
     const name = this.props.name;
 
-    if (name) {
+    if (name) 
+    {
       const content = localStorage.getItem(name);
 
-      if (content && content !== this.props.content) {
+      if (content && content !== this.props.content) 
+      {
         this.setState({ content });
 
         this.props.onChange({
@@ -52,29 +61,36 @@ class EditorCK extends React.Component<IEditorProps, { content: string }> {
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() 
+{
     const name = this.props.name;
 
-    if (name) {
+    if (name) 
+    {
       localStorage.removeItem(name);
     }
   }
 
-  onEnter(event: any) {
+  onEnter(event: any) 
+{
     const { name, onCtrlEnter } = this.props;
 
-    if (name) {
+    if (name) 
+    {
       localStorage.removeItem(name);
       this.setState({ content: '' });
     }
 
-    if (onCtrlEnter) {
+    if (onCtrlEnter) 
+    {
       onCtrlEnter(event);
     }
   }
 
-  render() {
-    const {
+  render() 
+{
+    const 
+    {
       content,
       height,
       insertItems,
@@ -91,8 +107,10 @@ class EditorCK extends React.Component<IEditorProps, { content: string }> {
       onChange
     } = this.props;
 
-    const mentionDataFeed = (opts, callback) => {
-      if (mentionUsers.length <= 1) {
+    const mentionDataFeed = (opts, callback) => 
+    {
+      if (mentionUsers.length <= 1) 
+      {
         return;
       }
 
@@ -179,7 +197,8 @@ class EditorCK extends React.Component<IEditorProps, { content: string }> {
           ],
           removeButtons,
           removePlugins,
-          codemirror: {
+          codemirror: 
+          {
             enableCodeFormatting: false,
             enableCodeFolding: false,
             showSearchButton: false,
